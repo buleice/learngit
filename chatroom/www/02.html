@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="jquery-2.1.0.js"></script>
+		<script type="text/javascript">
+			$(function(){
+				$("#btn1").click(function(){
+					console.log(1)
+					$.ajax({
+						url:'/reg',
+						data:{username:$('#username').val(),password:$('#password').val()},
+						dataType:'json',
+						success(res){
+							if(res.code==1){
+								alert('注册失败,'+res.msg);
+							}else{
+								alert('注册成功')
+							}
+						},
+						error(err){
+							console.log(err);
+							alert('错了')
+						}
+					})
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<form action="" method="post">
+			<label for="">用户名:</label>
+			<input type="text" name="username" id="username" value="" />
+			<label for="">密码:</label>
+			<input type="password" name="password" id="password" value="" />
+			<input type="button" value="注册" id="btn1"/>
+		</form>
+	</body>
+</html>
