@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>手绘制canvas</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+		<script type="text/javascript" src="js/jquery-2.1.0.js"></script>
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<!--	    <script type="text/javascript" src="/js/wx-sdk-1.2.0.js"> </script>-->
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			.poster {
+				position: fixed;
+				width: 100%;
+				top: 0;
+				bottom: 0;
+				background: rgba(10, 8, 8, 0.8);
+				background-image: linear-gradient(45deg, rgba(0, 0, 0, .25) 25%, transparent 0, transparent 75%, rgba(0, 0, 0, .25) 0), linear-gradient(45deg, rgba(0, 0, 0, .25) 25%, transparent 0, transparent 75%, rgba(0, 0, 0, .25) 0);
+				background-position: 0 0, 10px 10px;
+				background-size: 20px 20px;
+				z-index: -1;
+				;
+			}
+			
+			.show {
+				display: block;
+				width: 65%;
+				height: auto;
+				margin: 15px auto 0;
+			}
+			
+			.btns {
+				width: 100%;
+				height: 40px;
+				box-sizing: border-box;
+				padding: 0 40px;
+			}
+			
+			.btns .btn_1 {
+				float: left;
+			}
+			
+			.btns .btn_2 {
+				float: right
+			}
+			
+			.btns .btn {
+				width: 40%;
+				height: 2rem;
+				border-radius: 0.5rem;
+				text-align: center;
+				line-height: 30px;
+				background: #fff;
+				position: relative;
+				padding-right: 10px;
+			}
+			
+			.btns .btn img {
+				line-height: 0.5rem;
+				width: 1rem;
+				height: 1rem;
+				display: inline-block;
+			}
+			
+			.btns .btn span {
+				display: inline-block
+			}
+			
+			.second {
+				display: none;
+				width: 100%;
+				height: 2.293333rem;
+				text-align: center;
+				color: aliceblue;
+				margin: 10px;
+			}
+			
+			.second img {
+				width: 13px;
+				height: 17px;
+				float: left;
+				margin-left: 17.5%;
+			}
+			
+			.second .fenxiang:after {
+				content: '';
+				display: block;
+				clear: both;
+			}
+			
+			.earn_scholarships .desc .second .p_1 {
+				text-align: center;
+				padding-top: .746667rem;
+				font-size: .373333rem;
+				color: #fff;
+				height: .373333rem;
+				line-height: .373333rem;
+			}
+			
+			.second .p_2 {
+				text-align: center;
+				color: #ffe433;
+				font-size: .32rem;
+				height: .32rem;
+				line-height: .32rem;
+				padding-top: .24rem;
+			}
+		</style>
+	</head>
+
+	<body>
+		<canvas id="myCanvas" width="200" height="100" style="display:none;"></canvas>
+		<div class="poster" style="display:none;"></div>
+		<img class="show" src="" alt="">
+		<div style="width: 100%;height: 50px; padding:0 0 10px 0;">
+			<div class="second">
+				<div class="fenxiang" style="width: 100%;height: auto;"><img src="img/fenxiang.png" alt=""></div>
+				<p class="p_1">请保存图片，分享至朋友圈</p>
+				<!--      <p class="p_2">越多朋友购买，您可得越多奖学金</p>-->
+			</div>
+		</div>
+		<div class="btns">
+			<div class="btn btn_1">
+				<img src="img/link.png" alt="">
+				<span>分享链接</span>
+			</div>
+			<div class="btn btn_2">
+				<img src="img/pyq.png" alt="">
+				<span>分享海报</span>
+			</div>
+		</div>
+	</body>
+	<script>
+		var buyingid='5b58260aefcba474ac55d134';
+		var groupid='20180805111101x11c7e016f37';
+		$.get("/groupbuying/invite.json?buyingid="+buyingid+"&groupid="+groupid,
+		function(data,status){
+			console.log(data,status);
+		})
+		document.querySelector(".btn_2").onclick = function() {
+			console.log(this)
+			document.querySelector(".second").style.display = "block"
+		}
+
+		window.onload = function() {
+			setTimeout(function() {
+				showImage()
+			}, 500)
+		}
+		var dpr=window.devicePixelRatio;
+		
+		var clientWidth = window.innerWidth || document.body.clientWidth;
+		var clientHeight = window.innerHeight || document.body.clientHeight;
+
+		var canvas = document.getElementById("myCanvas");
+		canvas.width = clientWidth*dpr;
+		canvas.height = canvas.width * 1.85;
+		var ctx = canvas.getContext("2d");
+		ctx.strokeStyle = "rgba(0,0,0,0)";
+		CanvasRenderingContext2D.prototype.roundRect = function(x, y, w, h, r) {
+			if(w < 2 * r) r = w / 2;
+			if(h < 2 * r) r = h / 2;
+			this.beginPath();
+			this.moveTo(x + r, y);
+			this.arcTo(x + w, y, x + w, y + h, r);
+			this.arcTo(x + w, y + h, x, y + h, r);
+			this.arcTo(x, y + h, x, y, r);
+			this.arcTo(x, y, x + w, y, r);
+			// this.arcTo(x+r, y);
+			this.closePath();
+			return this;
+		}
+		drawBg();
+		//圆角矩形
+
+		function drawBg() {
+			var img = new Image();
+			img.src = "img/bg.png";
+			img.setAttribute("crossOrigin", 'Anonymous')
+			img.onload = function() {
+				ctx.roundRect(0, 0, canvas.width,canvas.height, 15).stroke();
+				ctx.clip();
+				ctx.drawImage(img, 0, 0,canvas.width, canvas.height);
+				drawQrcode()
+			}
+		}
+
+		function drawQrcode() {
+			var img = new Image();
+			img.src = "img/qrcode.png";
+			img.setAttribute("crossOrigin", 'Anonymous')
+			img.onload = function() {
+				ctx.save()
+				ctx.drawImage(img,canvas.width / 2, canvas.height * 0.8, canvas.width * 0.23,canvas.width * 0.23)
+				drawText()
+			}
+		}
+
+		function drawText() {
+			ctx.font = 12*dpr+"px Arial";
+			ctx.fillText("长按扫描，和我一起上课吧!",canvas.width * 0.45, canvas.height * 0.95);
+			drawUserimg()
+		}
+
+		function drawUserimg() {
+			var circleR = 15*dpr; //半径
+			var circleX = canvas.width * 0.35;
+			var circleY = canvas.height * 0.95; //圆心Y坐标
+			var imgX = circleX - circleR; //图片X开始坐标
+			var imgY = circleY - circleR; //图片Y开始坐标
+			var imgWidth = 2 * circleR; //图片按圆形大小
+			var img = new Image();
+
+			img.src = "img/fenxiangIcon.png";
+			img.setAttribute("crossOrigin", 'Anonymous');
+			img.onload = function() {
+				ctx.save(); // 保存当前ctx的状态
+				ctx.arc(circleX, circleY, circleR, 0, 2 * Math.PI); //画出圆
+				ctx.clip(); //裁剪上面的圆形
+				ctx.drawImage(img, imgX, imgY, imgWidth, imgWidth); // 在刚刚裁剪的园上画图
+				ctx.restore(); // 还原状态
+			}
+		}
+
+		function saveImageInfo() {
+			var img = new Image()
+			var src = canvas.toDataURL("image/png");
+			//
+			//        var w = window.open('about:blank', 'image from canvas');
+			// 
+			//        //把图片新进新的窗口
+			//        w.document.write("<img src='" + src + "' alt='from canvas'/>");
+		}
+
+		function showImage() {
+
+			var src = canvas.toDataURL("image/png");
+			var img = new Image()
+			document.querySelector("img.show").setAttribute("src", src);
+			document.querySelector(".poster").style.display = "block";
+			//
+			//        var w = window.open('about:blank', 'image from canvas');
+			// 
+			//        //把图片新进新的窗口
+			//        w.document.write("<img src='" + src + "' alt='from canvas'/>");
+		}
+		//	绘制圆角
+	</script>
+
+</html>

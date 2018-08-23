@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<script type="text/javascript" src="js/jquery-2.1.0.js">
+		</script>
+		<title>Document</title>
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--<img id="img" src="img/bg.png"/>-->
+		<canvas id="myCanvas" width="200" height="100" style=""></canvas>
+		<div id="qrcode"></div>
+	</body>
+	<script type="text/javascript">
+		drawCanvasBgImg()
+		getQRcode()
+		function getQRcode() {
+			$.post("https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=TOKEN", {
+					"expire_seconds": 604800,
+					"action_name": "QR_STR_SCENE",
+					"action_info": {
+						"scene": {
+							"scene_id": 123
+						}
+					}
+				},
+				function(data, status) {
+					console.log(data)
+
+					if(status == 200) {
+						$.get('https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=' + encodeURI(data.icket),
+							function(data, status) {
+								console.log(data)
+							}
+						)
+					}
+
+				})
+		}
+
+		// 获取页面dpr和宽度
+		function getWindowInfo() {
+			var windowInfo = {};
+			windowInfo.dpr = window.devicePixelRatio;
+			if(window.innerWidth) {
+				windowInfo.width = window.innerWidth;
+			} else {
+				windowInfo.width = document.body.clientWidth;
+			}
+			console.log(windowInfo)
+			return windowInfo;
+		}
+
+		function drawCanvasBgImg() {
+			var canvas = document.getElementById("myCanvas");
+			var ctx = canvas.getContext("2d");
+			var clientWidth = getWindowInfo().width;   //获取屏幕宽度用于canvas宽度自适应移动端屏幕
+			var dpr = getWindowInfo().dpr;
+			ctx.globalCompositeOperation = "source-atop"; //** 坑锯齿感觉没什么用不知道是不是用错地方了 **
+			canvas.width = clientWidth*dpr;   //由于手机屏幕时retina屏，都会多倍渲染，用dpr来动态设置画布宽高，避免图片模糊
+			canvas.height = clientWidth * 677*dpr / 375;
+			var img = new Image();
+			img.src = "img/bg.png";
+
+
+			img.onload = function() {
+				ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+				drawCanvasQrcode()
+				setTimeout(function() {
+					drawCanvasUserImg(canvas, ctx, dpr);
+				}, 100)
+
+			}
+			function drawCanvasQrcode() {
+				var clientWidth = getWindowInfo().width;   //获取屏幕宽度用于canvas宽度自适应移动端屏幕
+				var dpr = getWindowInfo().dpr;
+				var width = getWindowInfo().width * 0.23;
+				var height = width;
+				var _x = getWindowInfo().width * 0.54;
+				var _y = getWindowInfo().width * 609 / 375 * 0.73;
+				var img = new Image();
+				img.src = "img/qrcode.png";
+				img.onload = function() {
+					ctx.save(); // 保存当前ctx的状态
+					ctx.drawImage(img, _x, _y, width, height);
+
+				}
+			}
+		}
+
+		// 在背景图片的画布上截取一个圆然后填充入用户头像
+		function drawCanvasUserImg(canvas, ctx, dpr) {
+			var circleR = 6 * dpr; //半径
+			var circleX = canvas.width * 0.65;
+			var circleY = getWindowInfo().width * 609 / 375 * 0.80; //圆心Y坐标
+			var imgX = circleX - circleR; //图片X开始坐标
+			var imgY = circleY - circleR; //图片Y开始坐标
+			var imgWidth = 2 * circleR; //图片按圆形大小
+			var img = new Image();
+			img.src = "http://thirdwx.qlogo.cn/mmopen/vi_32/eCDMV0cxFLrKcoZHgR8wvW1frRuxH92l8eOwPNLsegrNcXWMXLqvlMlDHLqeibVyzwksFrft1rD0OVGBAgba0qA/132";
+			img.onload = function() {
+				ctx.save(); // 保存当前ctx的状态
+				ctx.arc(circleX, circleY, circleR, 0, 2 * Math.PI); //画出圆
+				ctx.clip(); //裁剪上面的圆形
+				ctx.drawImage(img, imgX, imgY, imgWidth, imgWidth); // 在刚刚裁剪的园上画图
+				ctx.restore(); // 还原状态
+				canvasFillText(canvas, ctx, dpr, circleR);
+			}
+		}
+var userName="韩承吉"
+var userMessage="邀你一起加入拼团"
+		function canvasFillText(canvas, ctx, dpr, circleR) {
+			var fontSizeThis = dpr * 5 + 'px' + ' Arial';
+			var userNameY = 500; //用户名Y轴坐标
+			var userMessageX = dpr * 40; //用户留言X轴坐标
+			var userMessageY = 550; //用户留言Y轴坐标
+			var lastSubStrIndex = 0; //字符串下标
+			var lineWidth = 0; //一行宽度
+			var allTextWidth = 0; //所有字符宽度
+			ctx.font = fontSizeThis;
+//			 需要用户名是写入用户名
+					    if (userName) {
+					        ctx.fillStyle = "#0094ff";
+					        ctx.textAlign = 'center';
+					        ctx.fillText(userName, canvas.width / 2, userNameY);
+					    }
+					    if (userMessage) {
+					        ctx.fillStyle = "#000";
+					        // 获取字符宽度
+					        for (var i = 0; i < userMessage.length; i++) {
+					            allTextWidth += ctx.measureText(userMessage[i]).width;
+					        }
+					        // 字符串长度大于画布区域要换行
+					        if (allTextWidth > canvas.width - 2* userMessageX) {
+					            for (var i = 0; i < userMessage.length; i++) {
+					                lineWidth += ctx.measureText(userMessage[i]).width;
+					                if (lineWidth > canvas.width - 2*userMessageX) {
+					                    ctx.textAlign = 'left';
+					                    ctx.fillText(userMessage.substring(lastSubStrIndex, i), userMessageX, userMessageY);
+					                    userMessageY += dpr * 25;//设置行高
+					                    lineWidth = 0;
+					                    lastSubStrIndex = i;
+					                }
+					                if (i == userMessage.length - 1) {
+					                    ctx.fillText(userMessage.substring(lastSubStrIndex, i + 1), userMessageX, userMessageY);
+					                }
+					            }
+					        } else {
+					            // 小于者居中显示
+					            ctx.textAlign = 'center';
+					            ctx.fillText(userMessage, canvas.width / 2, userMessageY);
+					        }
+					    }
+		}
+	</script>
+
+</html>

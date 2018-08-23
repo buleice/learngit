@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+</head>
+<body>
+    <canvas id = "palette" width="400px" height="400px">
+        您的浏览器不支持Canvas标签，请升级或更换浏览器
+    </canvas>
+</body>
+</html>
+<script>
+    var palette = document.querySelector("#palette").getContext("2d");
+//    palette.moveTo(0,0);
+//    palette.lineTo(0,300);
+//    palette.moveTo(50.5,0);
+//    palette.lineTo(50.5,300);
+//    palette.moveTo(100.5,0);
+//    palette.lineTo(100.5,300);
+//    palette.moveTo(150.5,0);
+//    palette.lineTo(150.5,300);
+//    palette.moveTo(200.5,0);
+//    palette.lineTo(200.5,300);
+//    palette.moveTo(250.5,0);
+//    palette.lineTo(250.5,300);
+//    palette.moveTo(300.5,0);
+//    palette.lineTo(300.5,300);
+//    palette.moveTo(0,0);
+//    palette.lineTo(300,0);
+//    palette.moveTo(0,50.5);
+//    palette.lineTo(300,50.5);
+//    palette.moveTo(0,100.5);
+//    palette.lineTo(300,100.5);
+//    palette.moveTo(0,150.5);
+//    palette.lineTo(300,150.5);
+//    palette.moveTo(0,200.5);
+//    palette.lineTo(300,200.5);
+//    palette.moveTo(0,250.5);
+//    palette.lineTo(300,250.5);
+//    palette.moveTo(0,300.5);
+//    palette.lineTo(300,300.5);
+//    palette.stroke();
+
+    CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+        if (w < 2 * r) r = w / 2;
+        if (h < 2 * r) r = h / 2;
+        this.beginPath();
+        this.moveTo(x+r, y);
+        this.arcTo(x+w, y, x+w, y+h, r);
+        this.arcTo(x+w, y+h, x, y+h, r);
+        this.arcTo(x, y+h, x, y, r);
+        this.arcTo(x, y, x+w, y, r);
+        this.closePath();
+        return this;
+    }
+    palette.lineWidth = 5;
+    palette.strokeStyle = "#F00";
+    palette.roundRect(50,50,200,150,30).stroke();
+</script>
