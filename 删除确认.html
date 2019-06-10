@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Keat </title>
+    <style>
+        body {
+            background-color: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            perspective: 1000px;
+            transform: translate(-50%, -50%);
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+
+        .container {
+            display: block;
+            position: relative;
+            width: 200px;
+            height: 80px;
+
+            transition: width 0.8s cubic-bezier(0.23, 1, 0.32, 1), height 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-style: preserve-3d;
+            transform-origin: 50% 50%;
+            text-align: center;
+        }
+
+        .btn-delete {
+            position: absolute;
+            display: block;
+            backface-visibility: hidden;
+            width: 100%;
+            height: 100%;
+            background-color: #F44336;
+            line-height: 80px;
+            text-align: center;
+            color: #fff;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .btn-delete:hover {
+            background-color: #f77066;
+        }
+
+        .btn-confirm {
+            font-size: 20px;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            color: #222;
+            text-align: center;
+            background-color: #eee;
+            transform: translateZ(-2px) rotateX(180deg);
+            transition: box-shadow 0.8s ease;
+        }
+
+        .btn-confirm p {
+            margin: 26px;
+        }
+
+        .btn-confirm button {
+            padding: 12px 20px;
+            width: 30%;
+            margin: 0 5px;
+            background-color: transparent;
+            border: 0;
+            border-radius: 2px;
+            font-size: 1em;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        .btn-confirm button:focus {
+            outline: 0;
+        }
+
+        .btn-confirm button.yes {
+            background-color: #2196F3;
+            color: #fff;
+        }
+
+        .btn-confirm button.yes:hover {
+            background-color: #51adf6;
+        }
+
+        .btn-confirm button.no {
+            color: #2196F3;
+        }
+
+        .btn-confirm button.no:hover {
+            background-color: #ddd;
+        }
+
+        .container.open {
+            width: 400px;
+            height: 160px;
+            transform: rotateX(180deg);
+        }
+
+        .container.open .btn-confirm {
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="btn-confirm">
+            <p>Are you sure to delete?<p>
+                    <button class="yes btn">yes</button>
+                    <button class="no btn">no</button>
+        </div>
+        <div class="btn-delete">Delete</div>
+    </div>
+    <script>
+        var con = document.getElementsByClassName('container')[0]
+
+        document.getElementsByClassName('btn-delete')[0].addEventListener('click', function() {
+            con.classList.add('open')
+        })
+
+        document.getElementsByClassName('yes')[0].addEventListener('click', function() {
+            con.classList.remove('open')
+        })
+
+        document.getElementsByClassName('no')[0].addEventListener('click', function() {
+            con.classList.remove('open')
+        })
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>A pure CSS parallax demo with navgation and smooth scrolling by Ch</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            scroll-behavior: smooth;
+        }
+        @keyframes noticeUp{
+            0% {
+                transform: translateY(60px);
+            }
+            10%{
+               transform: translateY(0px); 
+            }
+            90%{
+              transform: translateY(0px); 
+            }
+            100% {
+                transform: translateY(-60px);
+            }
+        }
+
+        .container {
+            max-width: 100%;
+            height: 60px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            border: 1px dashed red;
+            transition: all ease 1s;
+            -ms-overflow-style: none;
+            overflow: -moz-scrollbars-none;
+            scroll-behavior: smooth;
+        }
+
+        .container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .container ul {
+            width: 100%;
+            height: auto;
+/*            animation: noticeUp 5s steps(1) 5s infinite ;*/
+        }
+
+        .container ul li {
+            list-style: none;
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <ul id="notices">
+            <li>
+                1A pure CSS parallax demo with navgation and smooth scrolling by Ch
+            </li>
+            <li>
+                2A pure CSS parallax demo with navgation and smooth scrolling by Ch
+            </li>
+            <li>
+                3A pure CSS parallax demo with navgation and smooth scrolling by Ch
+            </li>
+            <li>
+                4A pure CSS parallax demo with navgation and smooth scrolling by Ch
+            </li>
+            <li>
+                5A pure CSS parallax demo with navgation and smooth scrolling by Ch
+            </li>
+            <li>
+                A6 pure CSS parallax demo with navgation and smooth scrolling by Ch
+            </li>
+            <li>
+                7A pure CSS parallax demo with navgation and smooth scrolling by Ch
+            </li>
+            <li>
+                8A pure CSS parallax demo with navgation and smooth scrolling by Ch
+            </li>
+            <li>
+                9A pure CSS parallax demo with navgation and smooth scrolling by Ch
+            </li>
+            <li>
+                10A pure CSS parallax demo with navgation and smooth scrolling by Ch
+            </li>
+        </ul>
+    </div>
+
+</body>
+<script>
+    window.onload = function() {
+        const container = document.getElementsByClassName("container")[0];
+        const notices = document.getElementById("notices");
+        const noticesLength = notices.childElementCount;
+        let initIndex = 0;
+        setInterval(() => {
+            container.scrollTop = (initIndex + 1) * 60;
+            initIndex = initIndex >= noticesLength-1 ? 0 : initIndex + 1;
+        }, 1000*5)
+    }
+
+</script>
+
+</html>

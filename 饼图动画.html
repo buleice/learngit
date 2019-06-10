@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Keat </title>
+    <style>
+        .wrapper {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            top:50%;
+            left:50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .sector {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: #ff298c;
+            -webkit-animation: sector-rotate 10s infinite;
+        }
+
+        .sector:before,
+        .sector:after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transform: rotate(0deg);
+            clip: rect(0, 100px, 200px, 0);
+        }
+
+        .sector:before {
+            background: #fb8bbc;
+            -webkit-animation: sector-a-rotate 10s infinite linear;
+        }
+
+        .sector:after {
+            background: #ff298c;
+            -webkit-animation: sector-b-rotate 10s infinite linear;
+        }
+
+        @-webkit-keyframes sector-rotate {
+            49.999% {
+                background: #ff298c;
+            }
+
+            50% {
+                background: #fb8bbc;
+            }
+
+            100% {
+                background: #fb8bbc;
+            }
+        }
+
+        @-webkit-keyframes sector-a-rotate {
+            49.999% {
+                background: #fb8bbc;
+            }
+
+            50%,100% {
+                background: #ff298c;
+            }
+        }
+
+        @-webkit-keyframes sector-b-rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            24.999% {
+                background: #ff298c;
+                transform: rotate(-180deg);
+            }
+
+            25% {
+                background: #fb8bbc;
+                transform: rotate(0deg);
+            }
+
+            50% {
+                background: #fb8bbc;
+                transform: rotate(-180deg);
+            }
+
+            50.001% {
+                background: #fb8bbc;
+                transform: rotate(0deg);
+            }
+
+            74.999% {
+                background: #fb8bbc;
+                transform: rotate(-180deg);
+            }
+
+            75% {
+                background: #ff298c;
+                transform: rotate(0deg);
+            }
+
+            100% {
+                background: #ff298c;
+                transform: rotate(-180deg);
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sector">
+        </div>
+    </div>
+</body>
+
+</html>

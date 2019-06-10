@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> 电池波浪动画 </title>
+    <style>
+        .battery {
+            position: relative;
+        }
+
+        .mall {
+            position: relative;
+            z-index: 9;
+            margin: 0 auto;
+            width: 62px;
+            height: 10px;
+            border-radius: 7px 7px 0 0;
+            background: #1c1c1c;
+            overflow: hidden;
+        }
+
+        .battery-main {
+            position: relative;
+            margin: 0 auto;
+            width: 150px;
+            height: 260px;
+            border-radius: 9px;
+            background: linear-gradient(#1c1c1c, #1c1c1c 49.99%, #0052e9 50%, #003ca9);
+            overflow: hidden;
+        }
+
+        .battery-img2 {
+            background-image: url('https://image01.oneplus.net/shop/201805/25/1875/c2d36797fe29f0b8596188620fe21310.png');
+        }
+
+        .battery-img1 {
+            background-image: url('https://image01.oneplus.net/shop/201805/25/547/022359e947bc54458ca876e09aec69d3.png');
+        }
+
+        .battery-img1,
+        .battery-img2 {
+            position: absolute;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            animation: earphone-bullet-move-wave 4s linear infinite;
+            animation-direction: alternate;
+            background-position: left 40%;
+            background-repeat: repeat-x;
+            transform-origin: center bottom;
+        }
+
+        @-webkit-keyframes earphone-bullet-move-wave {
+            0% {
+                transform: translateX(0) translateZ(0) scaleY(1);
+                transform-origin: center bottom
+            }
+
+            50% {
+                transform: translateX(-25%) translateZ(0) scaleY(1);
+                transform-origin: center bottom
+            }
+
+            to {
+                transform: translateX(-50%) translateZ(0) scaleY(1);
+                transform-origin: center bottom
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="battery">
+        <div class="mall"></div>
+        <div class="battery-main">
+            <div class="battery-img1"></div>
+            <div class="battery-img2"></div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> 按钮hover效果 </title>
+    <style>
+        button {
+            position: relative;
+            width: 240px;
+            height: 30px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+            border-radius: 2px;
+            background-color: #eb0028;
+            color: #fff;
+            z-index: 1;
+        }
+        button:before{
+            content: "";
+            position: absolute;
+            top: -1px;
+            left: -1px;
+           height: calc(100% + 2px);
+            width: 0;
+            background-color: #b8001f;
+           transition: 0.25s all ease;
+            z-index: -1;
+             border-radius: 2px;
+        }
+ button:hover:before {
+    width: calc(100% + 2px);
+}
+
+    </style>
+</head>
+
+<body>
+    <button class="but">确定</button>
+</body>
+
+</html>
