@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style type="text/css">
+			@keyframes rotate-Y{
+				0%{
+					transform: rotateY(0deg);
+				}
+				50%{
+					transform: rotateY(360deg);
+				}
+				100%{
+					transform: rotateY(0deg);
+
+				}
+			}
+			#myCanvas{
+				animation: rotate-Y 3s linear infinite forwards;
+				transform-origin: 50% 50%;
+			}
+		</style>
+	</head>
+	<body>
+		<img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1562781309625&di=fc73fa987d2f64a2f6fb3b8b9170cdf8&imgtype=0&src=http%3A%2F%2Fwww.rjzxw.com%2Fdats%2Ftwjc%2F8%2F12234%2F12234-9.jpg" >
+		<canvas id="myCanvas" width="" height=""></canvas>
+		
+		<script type="text/javascript">
+			var canvasWidth=750;
+			var canvasHeight=1064;
+			// 获取 canvas 对象
+			var img=new Image();
+			img.src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1562781309625&di=fc73fa987d2f64a2f6fb3b8b9170cdf8&imgtype=0&src=http%3A%2F%2Fwww.rjzxw.com%2Fdats%2Ftwjc%2F8%2F12234%2F12234-9.jpg"
+			
+		
+			var canvas = document.getElementById('myCanvas')
+			canvas.width = canvasWidth
+			canvas.height = canvasHeight
+			// 获取 canvas 2D 上下文对象
+			var ctx = canvas.getContext('2d')
+			
+			img.onload = function() {
+			// 绘制图像
+			ctx.drawImage(img, 512, 220, 160, 192);
+			
+			ctx.save()
+			ctx.translate(canvasWidth, 0)
+			ctx.scale(-1, 1)
+			ctx.drawImage(img, canvasWidth-160-512,220, 160, 192)
+			ctx.restore()
+		}
+		</script>
+	</body>
+</html>
